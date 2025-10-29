@@ -1,0 +1,25 @@
+# test-flexvolume.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-flexvolume
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: hkk8snode001
+  volumes:
+    - name: test
+      flexVolume:
+        driver: 'ydzs/nfs' # 定义插件类型，根据这个参数在对应的目录下面找到插件的可执行文件
+        fsType: 'nfs' # 定义存储卷文件系统类型
+        options: # 定义所有与存储相关的一些具体参数
+          server: '192.168.178.35'
+          share: 'var/lib/k8s/data/'
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: test
+          subPath: testflexvolume
+          mountPath: /usr/share/nginx/html

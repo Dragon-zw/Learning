@@ -1,0 +1,13 @@
+# DeschedulerPolicy-exclude.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'PodLifeTime':
+    enabled: true
+    params:
+      podLifeTime:
+        maxPodLifeTimeSeconds: 86400
+      namespaces:
+        exclude:
+          - 'namespace1'
+          - 'namespace2'

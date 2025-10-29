@@ -1,0 +1,10 @@
+# DeschedulerPolicy-thresholdPriorityClassName.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'PodLifeTime':
+    enabled: true
+    params:
+      podLifeTime:
+        maxPodLifeTimeSeconds: 86400
+      thresholdPriorityClassName: 'priorityclass1'

@@ -1,0 +1,7 @@
+# production-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    ingress-allowlist: '*.qikqiak.com'
+  name: production

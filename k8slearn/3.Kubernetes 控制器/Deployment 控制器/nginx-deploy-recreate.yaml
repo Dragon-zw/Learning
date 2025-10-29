@@ -1,0 +1,25 @@
+# nginx-deploy-recreate.yaml
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name:  nginx-deploy
+  namespace: default
+spec:
+  replicas: 3  
+  selector:  
+    matchLabels:
+      app: nginx
+  minReadySeconds: 5
+  strategy:  
+    # 设置为 Recreate 则不需要配置 rollingUpdate 的字段
+    type: Recreate  # 指定更新策略：RollingUpdate和Recreate(重建Deployment)
+  template:  
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9 # Update: nginx:1.8.1
+        ports:
+        - containerPort: 80

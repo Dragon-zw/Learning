@@ -1,0 +1,10 @@
+# RemoveDuplicates.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'RemoveDuplicates':
+    enabled: true
+    params:
+      removeDuplicates:
+        excludeOwnerKinds:
+          - 'ReplicaSet'

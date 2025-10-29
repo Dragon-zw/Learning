@@ -1,0 +1,27 @@
+# nginx-deploy-rollingupdate.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  namespace: default
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate # 指定更新策略：RollingUpdate和Recreate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80

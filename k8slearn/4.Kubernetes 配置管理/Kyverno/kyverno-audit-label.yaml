@@ -1,0 +1,19 @@
+# kyverno-audit-label.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-label
+spec:
+  validationFailureAction: audit # 允许 Admission Review 请求，并将结果添加到报告中。
+  rules:
+    - name: check-for-labels
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate: # 配置 Admission Webhook 的配置
+        message: "label 'kyverno' is required"
+        pattern:
+          metadata:
+            labels:
+              kyverno: '?*'

@@ -1,0 +1,28 @@
+# cloneset-demo.yaml
+apiVersion: apps.kruise.io/v1alpha1
+kind: CloneSet
+metadata:
+  name: cs-demo
+  annotations:
+    apps.kruise.io/image-predownload-parallelism: '5'
+spec:
+  updateStrategy:
+    type: InPlaceIfPossible
+  minReadySeconds: 60
+  scaleStrategy:
+    maxUnavailable: 1
+  replicas: 4
+  selector:
+    matchLabels:
+      app: cs
+  template:
+    metadata:
+      labels:
+        app: cs
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

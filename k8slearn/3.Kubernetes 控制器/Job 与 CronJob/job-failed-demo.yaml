@@ -1,0 +1,13 @@
+# job-failed-demo.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-failed-demo
+spec:
+  template:
+    spec:
+      containers:
+      - name: test-job
+        image: busybox
+        command: ["echo123", "test failed job!"] # 执行错误的命令
+      restartPolicy: Never

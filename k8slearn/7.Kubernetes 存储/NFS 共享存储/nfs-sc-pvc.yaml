@@ -1,0 +1,12 @@
+# nfs-sc-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-sc-pvc
+spec:
+  # storageClassName: nfs-client  # 不指定则使用默认的 SC
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

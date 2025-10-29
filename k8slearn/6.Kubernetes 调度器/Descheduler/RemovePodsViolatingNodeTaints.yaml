@@ -1,0 +1,6 @@
+# RemovePodsViolatingNodeTaints.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'RemovePodsViolatingNodeTaints':
+    enabled: true

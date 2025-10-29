@@ -1,0 +1,40 @@
+# node-affinity-demo.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-affinity
+  labels:
+    app: node-affinity
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: node-affinity
+  template:
+    metadata:
+      labels:
+        app: node-affinity
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+          name: nginxweb
+      affinity:
+        nodeAffinity: # 节点亲和性
+          requiredDuringSchedulingIgnoredDuringExecution:  # 硬策略
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - hkk8smaster001
+          preferredDuringSchedulingIgnoredDuringExecution:  # 软策略
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: com
+                operator: In
+                values:
+                - youdianzhishi

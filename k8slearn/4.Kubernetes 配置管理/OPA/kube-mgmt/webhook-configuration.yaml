@@ -1,0 +1,29 @@
+kind: ValidatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1
+metadata:
+  name: opa-validating-webhook
+webhooks:
+  - name: validating-webhook.openpolicyagent.org
+    admissionReviewVersions: ["v1", "v1beta1"]
+    namespaceSelector:
+      matchExpressions:
+      - key: openpolicyagent.org/webhook
+        operator: NotIn
+        values:
+        - ignore
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+        - '*'
+        apiVersions:
+        - '*'
+        operations:
+        - '*'
+        resources:
+        - '*'
+    sideEffects: None
+    clientConfig:
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFVENDQWZtZ0F3SUJBZ0lVRk1rOThkSm9wOFFCeW4rYWkxcTRLcENXcURRd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0Z6RVZNQk1HQTFVRUF3d01ZV1J0YVhOemFXOXVYMk5oTUNBWERUSTFNVEF5TnpFM01EQTFORm9ZRHpJeQpPVGt3T0RFeU1UY3dNRFUwV2pBWE1SVXdFd1lEVlFRRERBeGhaRzFwYzNOcGIyNWZZMkV3Z2dFaU1BMEdDU3FHClNJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM2WG1WMENvcGxmNmNMbGFma1liNVlYQTdwOXpIUUpjL0sKUDEzY3RtREF3ajA4aEIrMTdZYjUwaHJ0bGFaUTd1UGFiaXVvUWVIM01oUDhianVyeFNiT2JQZk43bm4xQmhWVAoxREEwKzRIbTlRWUVqbjFpdGJRbDBOWE85NWJSRUhEVVBRUXc3emxER2hNRUhPL1A2UUt6TzB2aGhidEpiY1NwCmd5UXRteWlCZm9qR1NCWjlUbVZGbG00ZHR1NmZ6ZTBzREZKWDVlOUJLcXlVQnpCTWdhUGVyTm1xY1Nlc3JISVAKbUo1S1hOcVBveEJiYnFpclVsRGlDdDFEems3M2o2S1ZhNURoTFhyTllsd1Bxd2xROVp5NCtXVW5nN3lVVkp0awpOVUhZMkF2bXJWYjUyZ3plRmZ0TGlVdk9kcWFMenR2N29HeWhFWmNZVERNcnBIamcxeW9UQWdNQkFBR2pVekJSCk1CMEdBMVVkRGdRV0JCUkFwT2lMQXVhTnNHUWZlVkVxOFRodFV1anJHakFmQmdOVkhTTUVHREFXZ0JSQXBPaUwKQXVhTnNHUWZlVkVxOFRodFV1anJHakFQQmdOVkhSTUJBZjhFQlRBREFRSC9NQTBHQ1NxR1NJYjNEUUVCQ3dVQQpBNElCQVFDNThmbmY1V2FINklwZVBDMUx2ZG9lQ3ovdWFTUVpvV1NvaEd3RHRkYXJabDEzYWcxNmJ5N3JyMlY2Ck85RWZVeUkya3ptUTN2WGluaXVEUlZsSlErOEJzaHZmWDRVWndvTlJIK1VFdkp5N1JyVU9qRzZyWEorNWgvWmkKZUx2Yitxdzc2WlFITUFsV2VRaFNiNHE1SXcrZzRWTmFGQi9uV3laN2YySGdUSkJvakRJdEluSUlERXBGYnhXZQo4SytRUTF5Z3ZxZGF0bTltWk9jRlJPQ0l5dHNXNHVtSG1OYU5yLzd0a1FJUGFwQUhqSm9SL3FUenZNczBtb2RRCjRWcklJclNYM0dhYTU4b0VWd291dlhQTmU0VFFsMGsvZmhPNWZtZU8xR0NYWXFhSm1MWHRGdi9TejFPamVmMFcKajl4K0pFQ3hheExoN3g2bzRPUFpNSUpGVzFnNgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+      service:
+        namespace: opa
+        name: opa
