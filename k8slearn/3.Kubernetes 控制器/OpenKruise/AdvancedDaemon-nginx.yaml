@@ -1,0 +1,28 @@
+# AdvancedDaemon-nginx.yaml
+apiVersion: apps.kruise.io/v1alpha1
+kind: DaemonSet
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      rollingUpdateType: Standard
+      selector:
+        matchLabels:
+          kubernetes.io/hostname: hkk8snode001
+  selector:
+    matchLabels:
+      k8s-app: nginx
+  template:
+    metadata:
+      labels:
+        k8s-app: nginx
+    spec:
+      containers:
+        - image: nginx:1.8.1
+          name: nginx
+          ports:
+            - name: http
+              containerPort: 80

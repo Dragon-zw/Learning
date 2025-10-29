@@ -1,0 +1,20 @@
+# pv-hostpath-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-hostpath-pod
+spec:
+  volumes:
+    - name: pv-hostpath
+      persistentVolumeClaim:
+        claimName: pvc-hostpath
+  nodeSelector:
+    kubernetes.io/hostname: hkk8snode001
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - mountPath: '/usr/share/nginx/html'
+          name: pv-hostpath

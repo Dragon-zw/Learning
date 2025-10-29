@@ -1,0 +1,74 @@
+# my-nginx.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - name: my-nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx
+  labels:
+    app: my-nginx
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: my-nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-nginx
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/auth-keepalive: "75"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 500m
+    nginx.ingress.kubernetes.io/client-header-buffer-size: 10m
+    nginx.ingress.kubernetes.io/large-client-header-buffers: 4 10240k
+    nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+    nginx.ingress.kubernetes.io/proxy-buffer: 32 32k
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 5m
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "16"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-max-temp-file-size: 1024m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  labels:
+    app: nginx-dashboard
+spec:
+  ingressClassName: nginx # 使用 nginx 的 IngressClass（关联的 ingress-nginx 控制器）
+  rules:
+    - host: ngdemo.qikqiak.com # 将域名映射到 my-nginx 服务
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: # 将所有请求发送到 my-nginx 服务的 80 端口
+                name: my-nginx
+                port:
+                  number: 80
+# 不过需要注意大部分Ingress控制器都不是直接转发到Service
+# 而是只是通过Service来获取后端的Endpoints列表，直接转发到Pod，这样可以减少网络跳转，提gg高性能

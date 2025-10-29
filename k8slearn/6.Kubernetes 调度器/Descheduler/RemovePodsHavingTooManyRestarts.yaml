@@ -1,0 +1,10 @@
+# RemovePodsHavingTooManyRestarts.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'RemovePodsHavingTooManyRestarts':
+    enabled: true
+    params:
+      podsHavingTooManyRestarts:
+        podRestartThreshold: 100
+        includingInitContainers: true

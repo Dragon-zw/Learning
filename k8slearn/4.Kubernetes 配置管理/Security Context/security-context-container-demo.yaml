@@ -1,0 +1,15 @@
+# security-context-container-demo.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-container-demo
+spec:
+  securityContext:
+    runAsUser: 1000
+  containers:
+    - name: sec-ctx-demo
+      image: busybox
+      command: ['sh', '-c', 'sleep 60m']
+      securityContext:
+        runAsUser: 2000
+        allowPrivilegeEscalation: false

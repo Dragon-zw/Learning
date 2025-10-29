@@ -1,0 +1,8 @@
+# PodLifeTime.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'PodLifeTime':
+    enabled: true
+    params:
+      maxPodLifeTimeSeconds: 604800 # Pods 运行最多7天

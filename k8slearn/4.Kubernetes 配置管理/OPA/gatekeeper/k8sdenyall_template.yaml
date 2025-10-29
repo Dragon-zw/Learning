@@ -1,0 +1,28 @@
+# k8sdenyall_template.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdenyall
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDenyAll
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdenyall
+
+        violation[{"msg": msg}] {
+          msg := sprintf("input:  %v", [input])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDenyAll
+metadata:
+  name: deny-all-namespaces
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]

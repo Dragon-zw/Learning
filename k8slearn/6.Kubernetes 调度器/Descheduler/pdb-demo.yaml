@@ -1,0 +1,10 @@
+# pdb-demo.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-demo
+spec:
+  maxUnavailable: 1 # 设置最多不可用的副本数量，或者使用 minAvailable，可以使用整数或百分比
+  selector:
+    matchLabels: # 匹配Pod标签
+      app: demo

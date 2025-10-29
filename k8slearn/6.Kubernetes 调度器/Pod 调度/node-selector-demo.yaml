@@ -1,0 +1,17 @@
+# node-selector-demo.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: busybox-pod
+  name: test-busybox
+spec:
+  containers:
+  - command:
+    - sleep
+    - "3600"
+    image: busybox
+    imagePullPolicy: Always
+    name: test-busybox
+  nodeSelector:
+    com: youdianzhishi

@@ -1,0 +1,8 @@
+# cm-tcp-services.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx
+data:
+  '27017': default/mongo:27017

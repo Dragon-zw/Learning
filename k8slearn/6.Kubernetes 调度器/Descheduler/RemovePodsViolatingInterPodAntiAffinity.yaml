@@ -1,0 +1,6 @@
+# RemovePodsViolatingInterPodAntiAffinity.yaml
+apiVersion: 'descheduler/v1alpha1'
+kind: 'DeschedulerPolicy'
+strategies:
+  'RemovePodsViolatingInterPodAntiAffinity':
+    enabled: false

@@ -1,0 +1,7 @@
+# qa-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    ingress-allowlist: '*.qa.qikqiak.com,*.internal.qikqiak.com'
+  name: qa

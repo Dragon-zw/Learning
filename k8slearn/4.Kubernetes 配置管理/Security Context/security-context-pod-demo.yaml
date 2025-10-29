@@ -1,0 +1,22 @@
+# security-context-pod-demo.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-pod-demo
+spec:
+  volumes:
+    - name: sec-ctx-vol
+      emptyDir: {}
+  securityContext:
+    runAsUser: 1000 # 所有容器内的进程都以UID 1000运行
+    runAsGroup: 3000 # 所有容器内的进程都以GID 3000运行
+    fsGroup: 2000 # 挂载到卷的文件和目录都属于GID 2000
+  containers:
+    - name: sec-ctx-demo
+      image: busybox
+      command: ['sh', '-c', 'sleep 60m']
+      volumeMounts:
+        - name: sec-ctx-vol
+          mountPath: /pod/demo
+      securityContext:
+        allowPrivilegeEscalation: false

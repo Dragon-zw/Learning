@@ -1,0 +1,26 @@
+# SidecarSet-BeforeAppContainer.yaml
+apiVersion: apps.kruise.io/v1alpha1
+kind: SidecarSet
+metadata:
+  name: sidecarset
+spec:
+  selector:
+    matchLabels:
+      app: sample
+  containers:
+    # 默认的K8S容器字段
+    - name: nginx
+      image: nginx:alpine
+      volumeMounts:
+        - mountPath: /nginx/conf
+          name: nginx.conf
+      # 扩展的sidecar容器字段
+      podInjectPolicy: BeforeAppContainer
+      shareVolumePolicy:
+        type: disabled | enabled
+      transferEnv:
+        - sourceContainerName: main
+          envName: PROXY_IP
+  volumes:
+    - Name: nginx.conf
+      hostPath: /data/nginx/conf

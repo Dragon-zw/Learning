@@ -1,0 +1,33 @@
+# cm-descheduler.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: descheduler
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha1"
+    kind: "DeschedulerPolicy"
+    strategies:
+      LowNodeUtilization:
+        enabled: true
+        params:
+          nodeResourceUtilizationThresholds:
+            targetThresholds: # 低利用率阈值（%百分比的形式）
+              cpu: 50
+              memory: 50
+              pods: 80
+            thresholds: # 目标阈值（%百分比的形式）
+              cpu: 20
+              memory: 20
+              pods: 20
+      RemoveDuplicates: # 确保只有一个和 Pod 关联的 RS、Deployment 或者 Job 资源对象运行在同一节点上
+        enabled: true
+      RemovePodsViolatingInterPodAntiAffinity: # 确保从节点中删除违反 Pod 反亲和性的 Pod
+        enabled: true
+      RemovePodsViolatingNodeAffinity: # 确保从节点中删除违反节点亲和性的 Pod
+        enabled: true
+        params:
+          nodeAffinityType:
+          - requiredDuringSchedulingIgnoredDuringExecution
+      RemovePodsViolatingNodeTaints: # 确保从节点中删除违反 NoSchedule 污点的 Pod
+        enabled: true

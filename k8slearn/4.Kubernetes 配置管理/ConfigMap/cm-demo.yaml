@@ -1,0 +1,13 @@
+# cm-demo.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cm-demo
+  namespace: default
+data:
+  data.1: hello
+  data.2: world
+  config: |
+    property.1=value-1
+    property.2=value-2
+    property.3=value-3
