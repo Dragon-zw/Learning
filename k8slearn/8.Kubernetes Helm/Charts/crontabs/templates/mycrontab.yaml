@@ -1,0 +1,6 @@
+apiVersion: stable.example.com
+kind: CronTab
+metadata:
+  name: {{ .Values.name }}
+spec:
+   # ......
