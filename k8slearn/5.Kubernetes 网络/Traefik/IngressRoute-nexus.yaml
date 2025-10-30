@@ -1,0 +1,28 @@
+# IngressRoute-nexus.yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nexus
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`nexus.qikqiak.com`) && PathPrefix(`/foo`)
+      middlewares:
+        - name: strip-foo-path
+          namespace: default
+      services:
+        - kind: Service
+          name: nexus
+          namespace: default
+          port: 8081
+    # 需要正常访问的资源，则不需要进行 URL 重写
+    - kind: Rule
+      match: Host(`nexus.qikqiak.com`) && (PathPrefix(`/static`) || PathPrefix(`/service`)) # 匹配 /static 和 /service 的请求
+      services:
+        - kind: Service
+          name: nexus
+          namespace: default
+          port: 8081

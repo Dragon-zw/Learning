@@ -1,0 +1,19 @@
+# ingressroute-tls-demo.yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tls-demo
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`who.qikqiak.com`) && PathPrefix(`/tls`)
+      kind: Rule
+      services:
+        - name: whoami
+          port: 80
+  tls:
+    secretName: who-tlsk
+    # certResolver: ali
+    # domains:
+    #   - main: '*.qikqiak.com'
