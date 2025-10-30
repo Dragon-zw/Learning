@@ -1,0 +1,17 @@
+# ApisixRoute-dashboard.yaml
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: dashboard
+  namespace: apisix
+spec:
+  http:
+    - name: root
+      match:
+        hosts:
+          - apisix.qikqiak.com
+        paths:
+          - '/*'
+      backends:
+        - serviceName: apisix-dashboard
+          servicePort: 80
