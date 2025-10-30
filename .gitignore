@@ -3,3 +3,37 @@
 
 # Ignore File
 *.zip
+*.rar
+*.tar
+*.gz
+*.bz2
+*.7z
+*.iso
+*.apk
+*.dmg
+*.jar
+*.tar.gz
+*.tar.bz2
+*.tar.7z
+*.tar.xz
+*.tar.zst
+*.xz
+*.zst
+*.zstd
+*.zipx
+*.lz4
+*.lzma
+*.lzo
+*.lzop
+*.z
+*.z01
+*.z02
+*.z03
+*.z04
+*.z05
+*.z06
+*.z07
+*.z08
+*.z09
+*.zstd
+*.zstd
