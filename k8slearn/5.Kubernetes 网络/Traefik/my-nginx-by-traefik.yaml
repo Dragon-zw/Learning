@@ -1,0 +1,19 @@
+# my-nginx-by-traefik.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-nginx-by-traefik
+  namespace: default
+spec:
+  ingressClassName: traefik # 使用 traefk 的 IngressClass
+  rules:
+    - host: ngdemo-by-traefik.qikqiak.com # 将域名映射到 my-nginx 服务
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: # 将所有请求发送到 my-nginx 服务的 80 端口
+                name: my-nginx
+                port:
+                  number: 80

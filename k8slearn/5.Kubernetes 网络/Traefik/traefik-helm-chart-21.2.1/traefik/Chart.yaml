@@ -1,0 +1,33 @@
+apiVersion: v2
+name: traefik
+description: A Traefik based Kubernetes ingress controller
+type: application
+version: 21.2.1
+# renovate: image=traefik
+appVersion: v2.9.9
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - traefik
+  - ingress
+  - networking
+home: https://traefik.io/
+sources:
+  - https://github.com/traefik/traefik
+  - https://github.com/traefik/traefik-helm-chart
+maintainers:
+  - name: emilevauge
+    email: emile@vauge.com
+  - name: dtomcej
+    email: daniel.tomcej@gmail.com
+  - name: ldez
+    email: ldez@traefik.io
+  - name: mloiseleur
+    email: michel.loiseleur@traefik.io
+  - name: charlie-haley
+    email: charlie.haley@traefik.io
+icon: https://raw.githubusercontent.com/traefik/traefik/v2.3/docs/content/assets/img/traefik.logo.png
+annotations:
+  artifacthub.io/changes: |
+    - "⬆️ Upgrade traefik Docker tag to v2.9.9"
+    - "🎨 Introduce `image.registry` and add explicit default (it may impact custom `image.repository`)"
+    - ":memo: Clarify the need of an initContainer when enabling persistence for TLS Certificates"
