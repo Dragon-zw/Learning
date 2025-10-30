@@ -1,0 +1,4 @@
+imageRegistry: "quay.io/deis"
+dockerTag: "latest"
+pullPolicy: "Always"
+storage: "gcs"
