@@ -1,0 +1,7 @@
+mysqlUser:
+  user0
+mysqlPassword: user0pwd
+mysqlDatabase: user0db
+mysqlRootPassword: passw0rd
+persistence:
+  enabled: false
