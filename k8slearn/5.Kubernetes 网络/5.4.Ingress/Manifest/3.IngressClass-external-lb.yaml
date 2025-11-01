@@ -9,3 +9,5 @@ spec:
     apiGroup: k8s.example.com
     kind: IngressParameters
     name: external-lb
+    # namespace: external-configuration
+    # scope: Namespace

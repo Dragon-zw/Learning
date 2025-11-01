@@ -1,8 +1,8 @@
-# ingress-with-auth.yaml
+# ingress-with-tls-auth.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-with-auth
+  name: ingress-with-tls-auth
   annotations:
     # 认证类型
     nginx.ingress.kubernetes.io/auth-type: basic

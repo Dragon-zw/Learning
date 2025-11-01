@@ -1,0 +1,25 @@
+# canary-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: canary # 使用 canary Ingress 名称
+  annotations:
+    nginx.ingress.kubernetes.io/canary: 'true' # 要开启灰度发布机制，首先需要启用 Canary
+    # Annotation 添加配置
+    # nginx.ingress.kubernetes.io/canary-by-cookie: 'users_from_Beijing' # 基于 cookie，需要将 Header 的配置注释
+    # nginx.ingress.kubernetes.io/canary-by-header-value: user-value
+    # nginx.ingress.kubernetes.io/canary-by-header: canary # 基于 Header 的流量切分
+    nginx.ingress.kubernetes.io/canary-weight: '30' # 分配30%流量到当前Canary版本
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: echo.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: canary
+                port:
+                  number: 80

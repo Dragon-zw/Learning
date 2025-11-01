@@ -1,0 +1,11 @@
+# ApisixTls-ops-tls.yaml
+apiVersion: apisix.apache.org/v1
+kind: ApisixTls
+metadata:
+  name: ops-tls
+spec:
+  hosts:
+    - ops.qikqiak.com
+  secret:
+    name: ops-tls
+    namespace: default
