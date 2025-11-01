@@ -1,0 +1,19 @@
+# imageRegistry: "quay.io/deis"
+# dockerTag: "latest"
+# pullPolicy: "Always"
+# storage: "gcs"
+title: "My WordPress Site" # 传递到 WordPress 模板
+
+global:
+  app: MyWordPress
+
+mysql:
+  global:
+    app: MyWordPress
+  max_connections: 100 # 传递到 MySQL
+  password: "secret"
+
+apache:
+  global:
+    app: MyWordPress
+  port: 8080 # 传递到 Apache
