@@ -1,0 +1,15 @@
+# service-nodeport-demo.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myservice
+spec:
+  selector:
+    app: myapp
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31905
+      name: myapp-http

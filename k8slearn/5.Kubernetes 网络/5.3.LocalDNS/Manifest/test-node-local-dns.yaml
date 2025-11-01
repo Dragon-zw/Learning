@@ -1,0 +1,10 @@
+# test-node-local-dns.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-node-local-dns
+spec:
+  containers:
+    - name: local-dns
+      image: busybox
+      command: ['/bin/sh', '-c', 'sleep 60m']
