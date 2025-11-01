@@ -5,6 +5,10 @@ metadata:
   name: bcj-demo
   namespace: default
 spec:
+  completionPolicy:
+    type: Always # type: Never
+    ttlSecondsAfterFinished: 30
+    activeDeadlineSeconds: 10
   template:
     spec:
       restartPolicy: Never
