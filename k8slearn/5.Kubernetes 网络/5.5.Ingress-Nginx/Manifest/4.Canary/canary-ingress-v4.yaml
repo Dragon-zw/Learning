@@ -8,8 +8,8 @@ metadata:
     # Annotation 添加配置
     nginx.ingress.kubernetes.io/canary-by-cookie: 'users_from_Beijing' # 基于 cookie，需要将 Header 的配置注释
     # nginx.ingress.kubernetes.io/canary-by-header-value: user-value
-    # nginx.ingress.kubernetes.io/canary-by-header: canary # 基于 Header 的流量切分
-    nginx.ingress.kubernetes.io/canary-weight: '30' # 分配30%流量到当前Canary版本
+    nginx.ingress.kubernetes.io/canary-by-header: canary # 基于 Header 的流量切分
+    nginx.ingress.kubernetes.io/canary-weight: '30' # 会被忽略，因为配置了 canary-by-cookie
 spec:
   ingressClassName: nginx
   rules:
