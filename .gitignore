@@ -1,5 +1,6 @@
 # Ignore Folder
 .kiro/*
+.idea/*
 
 # Ignore File
 *.zip
