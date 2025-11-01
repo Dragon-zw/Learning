@@ -1,4 +1,4 @@
-# AdvancedStatefulSet-web.yaml
+# AdvancedStatefulSet-web-v2.yaml
 apiVersion: apps.kruise.io/v1beta1
 kind: StatefulSet
 metadata:
@@ -11,21 +11,19 @@ spec:
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
-      podUpdatePolicy: InPlaceIfPossible # 尽可能执行原地升级
-      maxUnavailable: 3 # 允许并行更新，最大不可以实例数为3
+      maxUnavailable: 3
+      partition: 4
   selector:
     matchLabels:
       app: nginx
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx # @
     spec:
-      readinessGates:
-        - conditionType: InPlaceUpdateReady # 一个新的条件，可确保 Pod 在发生原地更新时保持在 NotReady 状态
       containers:
         - name: nginx
-          image: nginx
+          image: nginx:1.7.9
           ports:
             - name: web
               containerPort: 80

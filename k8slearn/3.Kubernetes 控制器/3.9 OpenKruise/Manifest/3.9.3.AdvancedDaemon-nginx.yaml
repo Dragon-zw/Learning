@@ -7,11 +7,13 @@ metadata:
 spec:
   updateStrategy:
     type: RollingUpdate
+    partition: 10
+      paused: true # 暂停发布
     rollingUpdate:
-      rollingUpdateType: Standard
-      selector:
-        matchLabels:
-          kubernetes.io/hostname: hkk8snode001
+      rollingUpdateType: Standard # InPlaceIfPossible
+      # selector:
+      #   matchLabels:
+      #     kubernetes.io/hostname: hkk8snode001
   selector:
     matchLabels:
       k8s-app: nginx
