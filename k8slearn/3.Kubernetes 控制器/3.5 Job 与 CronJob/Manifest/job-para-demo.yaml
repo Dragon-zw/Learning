@@ -1,0 +1,15 @@
+# job-para-demo.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-para-test
+spec:
+  parallelism: 2 # 并行数
+  completions: 8 # 至少要完成的 Pod 数
+  template:
+    spec:
+      containers:
+      - name: test-job
+        image: busybox
+        command: ["echo", "test paralle job!"]
+      restartPolicy: Never
