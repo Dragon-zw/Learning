@@ -18,6 +18,13 @@ ingressRoute: # 不用自动创建，我们自己处理
   dashboard:
     enabled: true
 
+# Enable experimental features
+experimental:
+  kubernetesGateway: # 开启 gateway api 支持
+    enabled: true
+    # gateway:
+    #   enabled: true
+    
 #
 # 配置 providers
 #

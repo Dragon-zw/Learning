@@ -117,7 +117,7 @@ experimental:
   plugins:
     enabled: false
   kubernetesGateway:
-    enabled: false
+    enabled: true
     gateway:
       enabled: true
     # certificate:
