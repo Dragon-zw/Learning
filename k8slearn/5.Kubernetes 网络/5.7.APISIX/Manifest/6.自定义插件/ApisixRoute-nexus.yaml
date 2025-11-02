@@ -1,0 +1,24 @@
+# ApisixRoute-nexus.yaml
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: nexus
+  namespace: default
+spec:
+  http:
+    - name: ext
+      match:
+        hosts:
+          - ops.qikqiak.com
+        paths:
+          - '/extPlugin'
+      plugins:
+        - name: ext-plugin-pre-req # 启用ext-plugin-pre-req插件
+          enable: true
+          config:
+            conf:
+              - name: 'stop' # 使用 stop 这个自定义插件
+                value: '{"body":"hello"}'
+      backends:
+        - serviceName: nexus
+          servicePort: 8081

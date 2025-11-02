@@ -1,0 +1,35 @@
+# ApisixRoute-nexus.yaml
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: nexus
+  namespace: default
+spec:
+  http:
+    - name: root
+      match:
+        hosts:
+          - ops.qikqiak.com
+        paths:
+          - '/nexus*'
+          - '/static/*'
+          - '/service/*'
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: ['^/nexus(/|$)(.*)', '/$2']
+        - name: redirect
+          enable: true
+          config:
+            regex_uri: ['^(/nexus)$', '$1/']
+        - name: redirect
+          enable: true
+          config:
+            http_to_https: true
+      backends:
+        - serviceName: nexus
+          servicePort: 8081
+      authentication: # 开启 basic auth 认证
+        enable: true
+        type: basicAuth

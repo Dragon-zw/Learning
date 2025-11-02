@@ -1,0 +1,24 @@
+# ApisixRoute-proxy-rewrite-nexus.yaml
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: nexus
+  namespace: default
+spec:
+  http:
+    - name: root
+      match:
+        hosts:
+          - ops.qikqiak.com
+        paths:
+          - '/nexus*'
+          - '/static/*'
+          - '/service/*'
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: ['^/nexus(/|$)(.*)', '/$2']
+      backends:
+        - serviceName: nexus
+          servicePort: 8081

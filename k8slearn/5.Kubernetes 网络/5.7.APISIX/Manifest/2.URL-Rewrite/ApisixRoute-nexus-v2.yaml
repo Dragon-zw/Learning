@@ -1,4 +1,4 @@
-# ApisixRoute-nexus-redirect.yaml
+# ApisixRoute-nexus-v2.yaml
 apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
@@ -13,16 +13,6 @@ spec:
         paths:
           - '/nexus*'
           - '/static/*'
-          - '/service/*'
-      plugins:
-        - name: proxy-rewrite
-          enable: true
-          config:
-            regex_uri: ['^/nexus(/|$)(.*)', '/$2']
-        - name: redirect
-          enable: true
-          config:
-            regex_uri: ['^(/nexus)$', '$1/']
       backends:
         - serviceName: nexus
           servicePort: 8081
