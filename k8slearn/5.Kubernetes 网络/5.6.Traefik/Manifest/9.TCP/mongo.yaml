@@ -15,7 +15,7 @@ spec:
         app: mongo-traefik
     spec:
       nodeSelector:
-        kubernetes.io/hostname: hkk8smaster001  # 调度到 Traefik 所在节点
+        kubernetes.io/hostname: hkk8snode001  # 调度到 Traefik 所在节点
       containers:
         - name: mongo
           image: mongo:4.0

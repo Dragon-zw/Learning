@@ -1,0 +1,16 @@
+# ingressroute-demo.yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-demo
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`who.qikqiak.com`) && PathPrefix(`/notls`)
+      kind: Rule
+      services:
+        - name: whoami
+          port: 80
+      # middlewares:
+      #   - name: my-private-plugin # 使用上面新建的 middleware

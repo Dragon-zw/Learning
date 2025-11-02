@@ -77,8 +77,8 @@ resources:
 #   operator: "Equal"
 #   effect: "NoSchedule"
 
-nodeSelector: # 固定到 hkk8smaster001 这个边缘节点
-  kubernetes.io/hostname: 'hkk8smaster001'
+nodeSelector: # 固定到 hkk8snode001 这个边缘节点
+  kubernetes.io/hostname: 'hkk8snode001'
 
 # ci/deployment-prod.yaml
 # 需要将 Replicas 调整为 1，如果 Replicas 调整成多个副本会导致无法正常启动，因为会把证书保存到本地，会出现冲突

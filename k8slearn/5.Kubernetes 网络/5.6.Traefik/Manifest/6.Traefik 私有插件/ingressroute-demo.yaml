@@ -3,6 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: ingressroute-demo
+  namespace: default
 spec:
   entryPoints:
     - web
@@ -10,7 +11,7 @@ spec:
     - match: Host(`who.qikqiak.com`) && PathPrefix(`/notls`)
       kind: Rule
       services:
-        - name: whoami
+        - name: whoami # K8s Service
           port: 80
       middlewares:
         - name: my-private-plugin # 使用上面新建的 middleware

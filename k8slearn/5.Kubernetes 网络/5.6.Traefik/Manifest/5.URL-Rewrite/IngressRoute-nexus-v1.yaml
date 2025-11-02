@@ -1,0 +1,20 @@
+# IngressRoute-nexus-v1.yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nexus
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`nexus.qikqiak.com`) && PathPrefix(`/foo`) # 匹配 /foo 路径
+      middlewares:
+        - name: strip-foo-path
+          namespace: default # 由于我们开启了traefik的跨命名空间功能，所以可以引用其他命名空间中的中间件
+      services:
+        - kind: Service
+          name: nexus
+          namespace: default
+          port: 8081
