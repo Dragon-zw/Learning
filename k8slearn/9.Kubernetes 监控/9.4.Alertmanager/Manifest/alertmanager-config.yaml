@@ -1,0 +1,58 @@
+# alertmanager-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alert-config
+  namespace: monitor
+data:
+  config.yml: |-
+    global:
+      # 当alertmanager持续多长时间未接收到告警后标记告警状态为 resolved
+      resolve_timeout: 5m
+      # 配置邮件发送信息
+      smtp_smarthost: 'smtp.163.com:25'
+      smtp_from: 'xxxxxx@163.com'
+      smtp_auth_username: 'xxxxxx@163.com'
+      smtp_auth_password: 'xxxxxx' # 📮邮箱的授权码
+      smtp_hello: '163.com'
+      smtp_require_tls: false
+    # 所有报警信息进入后的根路由，用来设置报警的分发策略
+    route:
+      # 这里的标签列表是接收到报警信息后的重新分组标签，例如，接收到的报警信息里面有许多具有 cluster=A 和 alertname=LatncyHigh 这样的标签的报警信息将会批量被聚合到一个分组里面
+      group_by: ['alertname', 'cluster']
+      # 当一个新的报警分组被创建后，需要等待至少 group_wait 时间来初始化通知，这种方式可以确保您能有足够的时间为同一分组来获取多个警报，然后一起触发这个报警信息。
+      group_wait: 30s
+
+      # 相同的group之间发送告警通知的时间间隔
+      group_interval: 30s
+
+      # 如果一个报警信息已经发送成功了，等待 repeat_interval 时间来重新发送他们，不同类型告警发送频率需要具体配置
+      repeat_interval: 1h
+
+      # 默认的receiver：如果一个报警没有被一个route匹配，则发送给默认的接收器
+      receiver: default
+
+      # 上面所有的属性都由所有子路由继承，并且可以在每个子路由上进行覆盖。
+      routes:
+      - receiver: email
+        group_wait: 10s
+        group_by: ['instance'] # 根据instance做分组
+        match:
+          team: node
+    receivers:
+    - name: 'default'
+      email_configs:
+      - to: ' 935523993@qq.com'
+        send_resolved: true  # 接受告警恢复的通知
+    - name: 'email'
+      email_configs:
+      - to: '935523993@qq.com'
+        send_resolved: true
+    inhibit_rules:
+    - source_match:
+      alertname: NodeMemoryUsage
+      severity: critical
+    target_match:
+      severity: normal
+    equal:
+      - instance
