@@ -1,0 +1,19 @@
+# Service-redis.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  namespace: monitor
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9121'
+spec:
+  selector:
+    app: redis
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+    - name: prom
+      port: 9121
+      targetPort: 9121

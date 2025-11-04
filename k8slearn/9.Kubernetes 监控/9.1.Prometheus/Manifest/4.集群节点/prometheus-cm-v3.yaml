@@ -1,0 +1,28 @@
+# prometheus-cm-v3.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitor
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      scrape_timeout: 15s
+      
+    scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+      - targets: ['localhost:9090']
+
+    - job_name: 'coredns'
+      static_configs:
+        - targets: ['192.244.22.207:9153', '192.244.22.204:9153']
+        
+    - job_name: 'redis'
+      static_configs:
+        - targets: ['redis:9121'] # 使用 Redis 的 Service 的名称
+        
+    - job_name: 'nodes'
+      kubernetes_sd_configs: # 使用 Node 的服务发现模式
+        - role: node

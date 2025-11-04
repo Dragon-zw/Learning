@@ -1,0 +1,40 @@
+# prometheus-localpv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-local
+  labels:
+    app: prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  storageClassName: local-storage
+  local:
+    path: /data/k8s/prometheus
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - hkk8snode001
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-data
+  namespace: monitor
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: local-storage
