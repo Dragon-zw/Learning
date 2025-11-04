@@ -39,3 +39,5 @@
 *.zstd
 *.zstd
 k8slearn/5.Kubernetes 网络/Traefik/traefik-helm-chart-master
+k8slearn/9.Kubernetes 监控/9.1.Prometheus/Manifest/1.Prometheus-Demo/prometheus-3.7.3.linux-amd64/prometheus
+k8slearn/9.Kubernetes 监控/9.1.Prometheus/Manifest/1.Prometheus-Demo/prometheus-3.7.3.linux-amd64/promtool
