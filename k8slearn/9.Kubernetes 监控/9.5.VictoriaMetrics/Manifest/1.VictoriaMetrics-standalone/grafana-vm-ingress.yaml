@@ -1,0 +1,19 @@
+# grafana-vm-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-vm
+  namespace: kube-vm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: grafana-vm.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000

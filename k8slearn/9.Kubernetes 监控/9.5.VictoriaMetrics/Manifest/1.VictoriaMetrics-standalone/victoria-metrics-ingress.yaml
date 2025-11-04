@@ -1,0 +1,19 @@
+# victoria-metrics-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: victoria-metrics
+  namespace: kube-vm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: victoria-metrics.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: victoria-metrics
+                port:
+                  number: 8428

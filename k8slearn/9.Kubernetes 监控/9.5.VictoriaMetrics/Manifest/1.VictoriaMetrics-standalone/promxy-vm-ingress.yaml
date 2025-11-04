@@ -1,0 +1,19 @@
+# promxy-vm-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: promxy-vm
+  namespace: kube-vm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: promxy-vm.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: promxy
+                port:
+                  number: 8082

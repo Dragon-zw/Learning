@@ -1,0 +1,19 @@
+# prometheus-vm-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-vm
+  namespace: kube-vm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: prometheus-vm.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: 9090
