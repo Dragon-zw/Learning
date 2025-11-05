@@ -1,0 +1,19 @@
+# grafana-demo-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-demo
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: grafana-demo.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80

@@ -1,0 +1,34 @@
+# vmcluster-demo.yaml
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMCluster
+metadata:
+  name: vmcluster-demo
+spec:
+  replicationFactor: 1
+  retentionPeriod: '1w'
+  vmstorage:
+    replicaCount: 2
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10G
+          storageClassName: nfs-csi # 指定 StorageClass
+    storageDataPath: /vm-data
+  vmselect:
+    replicaCount: 2
+    cacheMountPath: /cache
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: nfs-csi # 指定 StorageClass
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1G
+  vminsert:
+    replicaCount: 2
