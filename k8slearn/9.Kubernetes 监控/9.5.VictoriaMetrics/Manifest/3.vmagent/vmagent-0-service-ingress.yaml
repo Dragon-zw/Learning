@@ -1,0 +1,35 @@
+# vmagent-0-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmagent-0
+  namespace: kube-vm
+spec:
+  selector:
+    app: vmagent
+    statefulset.kubernetes.io/pod-name: vmagent-0
+  type: NodePort
+  ports:
+    - name: http
+      port: 8429
+      targetPort: http
+---
+# vmagent-0-vm-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vmagent-0-vm
+  namespace: kube-vm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: vmagent-0-vm.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vmagent-0
+                port:
+                  number: 8429
