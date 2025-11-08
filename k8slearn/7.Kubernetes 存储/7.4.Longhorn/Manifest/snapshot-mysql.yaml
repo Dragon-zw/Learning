@@ -1,0 +1,10 @@
+# snapshot-mysql.yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: mysql-snapshot-demo
+spec:
+  volumeSnapshotClassName: longhorn
+  source:
+    persistentVolumeClaimName: mysql-pvc
+    # volumeSnapshotContentName: test-content
