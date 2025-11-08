@@ -1,0 +1,12 @@
+# html-vol.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: html
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi

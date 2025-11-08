@@ -18,10 +18,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      initContainers:
-      - name: wait-longhorn-admission-webhook
-        image: {{ template "registry_url" . }}{{ .Values.image.longhorn.manager.repository }}:{{ .Values.image.longhorn.manager.tag }}
-        command: ['sh', '-c', 'while [ $(curl -m 1 -s -o /dev/null -w "%{http_code}" -k https://longhorn-admission-webhook:9443/v1/healthz) != "200" ]; do echo waiting; sleep 2; done']
       containers:
       - name: longhorn-manager
         image: {{ template "registry_url" . }}{{ .Values.image.longhorn.manager.repository }}:{{ .Values.image.longhorn.manager.tag }}
@@ -49,23 +45,49 @@ spec:
         - "{{ template "registry_url" . }}{{ .Values.image.longhorn.manager.repository }}:{{ .Values.image.longhorn.manager.tag }}"
         - --service-account
         - longhorn-service-account
+        {{- if .Values.preUpgradeChecker.upgradeVersionCheck}}
+        - --upgrade-version-check
+        {{- end }}
         ports:
         - containerPort: 9500
           name: manager
+        - containerPort: 9501
+          name: conversion-wh
+        - containerPort: 9502
+          name: admission-wh
+        - containerPort: 9503
+          name: recov-backend
         readinessProbe:
-          tcpSocket:
-            port: 9500
+          httpGet:
+            path: /v1/healthz
+            port: 9501
+            scheme: HTTPS
         volumeMounts:
+        - name: boot
+          mountPath: /host/boot/
+          readOnly: true
         - name: dev
           mountPath: /host/dev/
         - name: proc
           mountPath: /host/proc/
+          readOnly: true
+        - name: etc
+          mountPath: /host/etc/
+          readOnly: true
         - name: longhorn
           mountPath: /var/lib/longhorn/
           mountPropagation: Bidirectional
         - name: longhorn-grpc-tls
           mountPath: /tls-files/
+        {{- if .Values.enableGoCoverDir }}
+        - name: go-cover-dir
+          mountPath: /go-cover-dir/
+        {{- end }}
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
@@ -78,16 +100,36 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        {{- if .Values.enableGoCoverDir }}
+        - name: GOCOVERDIR
+          value: /go-cover-dir/
+        {{- end }}
+      - name: pre-pull-share-manager-image
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: {{ template "registry_url" . }}{{ .Values.image.longhorn.shareManager.repository }}:{{ .Values.image.longhorn.shareManager.tag }}
+        command: ["sh", "-c", "echo share-manager image pulled && sleep infinity"]
       volumes:
+      - name: boot
+        hostPath:
+          path: /boot/
       - name: dev
         hostPath:
           path: /dev/
       - name: proc
         hostPath:
           path: /proc/
+      - name: etc
+        hostPath:
+          path: /etc/
       - name: longhorn
         hostPath:
           path: /var/lib/longhorn/
+      {{- if .Values.enableGoCoverDir }}
+      - name: go-cover-dir
+        hostPath:
+          path: /go-cover-dir/
+          type: DirectoryOrCreate
+      {{- end }}
       - name: longhorn-grpc-tls
         secret:
           secretName: longhorn-grpc-tls
@@ -99,22 +141,22 @@ spec:
       {{- if .Values.longhornManager.priorityClass }}
       priorityClassName: {{ .Values.longhornManager.priorityClass | quote }}
       {{- end }}
-      {{- if or .Values.longhornManager.tolerations .Values.global.cattle.windowsCluster.enabled }}
+      {{- if or .Values.global.tolerations .Values.longhornManager.tolerations .Values.global.cattle.windowsCluster.enabled }}
       tolerations:
         {{- if and .Values.global.cattle.windowsCluster.enabled .Values.global.cattle.windowsCluster.tolerations }}
 {{ toYaml .Values.global.cattle.windowsCluster.tolerations | indent 6 }}
         {{- end }}
-        {{- if .Values.longhornManager.tolerations }}
-{{ toYaml .Values.longhornManager.tolerations | indent 6 }}
+        {{- if or .Values.global.tolerations .Values.longhornManager.tolerations }}
+{{ default .Values.global.tolerations .Values.longhornManager.tolerations | toYaml | indent 6 }}
         {{- end }}
       {{- end }}
-      {{- if or .Values.longhornManager.nodeSelector .Values.global.cattle.windowsCluster.enabled }}
+      {{- if or .Values.global.nodeSelector .Values.longhornManager.nodeSelector .Values.global.cattle.windowsCluster.enabled }}
       nodeSelector:
         {{- if and .Values.global.cattle.windowsCluster.enabled .Values.global.cattle.windowsCluster.nodeSelector }}
 {{ toYaml .Values.global.cattle.windowsCluster.nodeSelector | indent 8 }}
         {{- end }}
-        {{- if .Values.longhornManager.nodeSelector }}
-{{ toYaml .Values.longhornManager.nodeSelector | indent 8 }}
+        {{- if or .Values.global.nodeSelector .Values.longhornManager.nodeSelector }}
+{{ default .Values.global.nodeSelector .Values.longhornManager.nodeSelector | toYaml | indent 8 }}
         {{- end }}
       {{- end }}
       serviceAccountName: longhorn-service-account
@@ -135,7 +177,6 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.service.manager.type }}
-  sessionAffinity: ClientIP
   selector:
     app: longhorn-manager
   ports:
