@@ -1,0 +1,38 @@
+# fluentdKafka-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: logging
+  labels:
+    app: fluentd
+    kubernetes.io/cluster-service: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  template:
+    metadata:
+      labels:
+        app: fluentd
+        kubernetes.io/cluster-service: 'true'
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      serviceAccountName: fluentd-es
+      containers:
+        - name: fluentd
+          image: registry.cn-shenzhen.aliyuncs.com/dragonzw_k8s_images/fluentd-kafka:v0.17.5
+          volumeMounts:
+            - name: fluentconfig
+              mountPath: /etc/fluent/config.d
+            - name: varlog
+              mountPath: /var/log
+      volumes:
+        - name: fluentconfig
+          configMap:
+            name: fluentd-conf
+        - name: varlog
+          hostPath:
+            path: /var/log
