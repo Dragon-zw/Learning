@@ -1,0 +1,19 @@
+# vmselect-vmcluster-demo-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vmselect-vmcluster-demo
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: vmselect-vmcluster-demo.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vmselect-vmcluster-demo
+                port:
+                  number: 8481
