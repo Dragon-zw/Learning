@@ -1,0 +1,19 @@
+# minioDashboard-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-dashboard
+  namespace: logging
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: minio.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loki-minio
+                port:
+                  number: 9000
