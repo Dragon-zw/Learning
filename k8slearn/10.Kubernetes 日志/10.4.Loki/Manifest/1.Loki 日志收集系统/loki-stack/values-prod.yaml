@@ -1,0 +1,33 @@
+# values-prod.yaml
+loki:
+  enabled: true
+  replicas: 1
+  rbac:
+    pspEnabled: false
+  persistence:
+    enabled: true
+    storageClassName: nfs-csi
+
+promtail:
+  enabled: true
+  rbac:
+    pspEnabled: false
+
+grafana:
+  enabled: true
+  # 指定 Grafana 镜像 URL
+  image:
+    # Source: docker.io/grafana/grafana:8.3.3
+    repository: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/grafana/grafana
+    tag: 8.3.3
+  service:
+    type: NodePort
+    nodePort: 31634
+  rbac:
+    pspEnabled: false
+  persistence:
+    enabled: true
+    storageClassName: nfs-csi
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi

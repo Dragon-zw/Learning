@@ -1,0 +1,19 @@
+# lokiDashboard-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loki-dashboard
+  namespace: logging
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: loki.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loki-grafana
+                port:
+                  number: 80
